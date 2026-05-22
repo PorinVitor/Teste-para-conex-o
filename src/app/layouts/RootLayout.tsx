@@ -14,11 +14,13 @@ import {
 import { useState } from "react";
 import { motion, AnimatePresence } from "motion/react";
 import appLogo from "../../imports/image.png";
+import { useAuth } from "../contexts/AuthContext";
 
 export function RootLayout() {
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
   const navigate = useNavigate();
   const location = useLocation();
+  const { logout } = useAuth();
 
   const menuItems = [
     { icon: LayoutDashboard, label: "Painel", path: "/" },
@@ -29,7 +31,7 @@ export function RootLayout() {
   ];
 
   const handleLogout = () => {
-    // In a real app, clear session
+    logout();
     navigate("/login");
   };
 
