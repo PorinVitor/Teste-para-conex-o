@@ -1,36 +1,10 @@
-import { useState } from "react";
-import { useNavigate, Link } from "react-router";
+import { Link } from "react-router";
 import { User, Mail, Lock, Building, UserCheck } from "lucide-react";
-import { toast } from "sonner";
 import appLogo from "../../imports/image.png";
-import { useAuth } from "../contexts/AuthContext";
+import { useRegisterController } from "../controllers/register.controller";
 
 export function RegisterView() {
-  const navigate = useNavigate();
-  const { register } = useAuth();
-  const [loading, setLoading] = useState(false);
-  const [formData, setFormData] = useState({
-    name: "",
-    email: "",
-    role: "",
-    schoolName: "",
-    password: "",
-  });
-
-  const handleRegister = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setLoading(true);
-    try {
-      await register(formData);
-      toast.success("Conta criada com sucesso!");
-      navigate("/");
-    } catch (error) {
-      const message = error instanceof Error ? error.message : "Falha no cadastro";
-      toast.error(message);
-    } finally {
-      setLoading(false);
-    }
-  };
+  const { loading, formData, setFormData, submit } = useRegisterController();
 
   return (
     <div className="min-h-screen bg-gray-50 flex flex-col justify-center py-12 sm:px-6 lg:px-8">
@@ -43,7 +17,7 @@ export function RegisterView() {
 
       <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
         <div className="bg-white py-8 px-4 shadow sm:rounded-2xl sm:px-10 border border-gray-100">
-          <form className="space-y-4" onSubmit={handleRegister}>
+          <form className="space-y-4" onSubmit={submit}>
             <div>
               <label className="block text-sm font-medium text-gray-700">Nome Completo</label>
               <div className="mt-1 relative rounded-md shadow-sm">
