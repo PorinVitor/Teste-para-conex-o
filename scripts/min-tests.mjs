@@ -33,4 +33,13 @@ assert.match(diaryFormControllerSource, /useDiaryFormController/);
 assert.match(diaryFormControllerSource, /uploadAttachment/);
 assert.match(diaryFormControllerSource, /validateAttachment/);
 
-console.log("OK: min tests passed (date + services + controllers)");
+
+const syncServiceSource = fs.readFileSync("src/app/services/sync.service.ts", "utf8");
+assert.match(syncServiceSource, /pullFromMobile/);
+assert.match(syncServiceSource, /\/sync\/mobile\/pull/);
+
+const syncControllerSource = fs.readFileSync("src/app/controllers/sync.controller.ts", "utf8");
+assert.match(syncControllerSource, /useSyncController/);
+assert.match(syncControllerSource, /syncWithMobile/);
+
+console.log("OK: min tests passed (date + services + controllers + sync)");
