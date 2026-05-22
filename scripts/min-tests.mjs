@@ -22,4 +22,15 @@ assert.match(dependentsServiceSource, /guardian_name/);
 assert.match(dependentsServiceSource, /has_recent_crisis/);
 assert.match(dependentsServiceSource, /trim\(\)\.toUpperCase\(\)/);
 
-console.log("OK: min tests passed (date + service normalization checks)");
+
+const diaryListControllerSource = fs.readFileSync("src/app/controllers/diary-list.controller.ts", "utf8");
+assert.match(diaryListControllerSource, /useDiaryListController/);
+assert.match(diaryListControllerSource, /handleDelete/);
+assert.match(diaryListControllerSource, /listByDependent/);
+
+const diaryFormControllerSource = fs.readFileSync("src/app/controllers/diary-form.controller.ts", "utf8");
+assert.match(diaryFormControllerSource, /useDiaryFormController/);
+assert.match(diaryFormControllerSource, /uploadAttachment/);
+assert.match(diaryFormControllerSource, /validateAttachment/);
+
+console.log("OK: min tests passed (date + services + controllers)");

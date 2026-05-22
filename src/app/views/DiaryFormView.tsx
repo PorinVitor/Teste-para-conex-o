@@ -1,100 +1,17 @@
-import { useState, useEffect } from "react";
-import { useParams, useNavigate, Link } from "react-router";
+import { Link } from "react-router";
 import { ArrowLeft, Save, Clock, MapPin, Type, Smile, Frown, Meh, AlertTriangle, Camera, School, Coffee, Heart, Target, Zap, BookOpen } from "lucide-react";
 import { toast } from "sonner";
-import { useAuth } from "../contexts/AuthContext";
-import { diaryService, type DiaryRecordType, type DiaryAttachment } from "../services/diary.service";
+import { useDiaryFormController } from "../controllers/diary-form.controller";
 
 export function DiaryFormView() {
-  const { id, diaryId } = useParams();
-  const navigate = useNavigate();
-  const isEdit = !!diaryId;
-  const { token } = useAuth();
-  const [loading, setLoading] = useState(false);
-  const [uploadingAttachment, setUploadingAttachment] = useState(false);
-  const [attachment, setAttachment] = useState<File | null>(null);
-  const [existingAttachments, setExistingAttachments] = useState<DiaryAttachment[]>([]);
-
-  const [formData, setFormData] = useState({
-    title: "", time: "", location: "Sala de Aula", content: "", mood: "Feliz", learning: "", hasCrisis: false, crisisDetails: "", resolution: "", icon: "Escola"
-  });
-
-  useEffect(() => {
-    async function loadRecord() {
-      if (!isEdit || !id || !diaryId || !token) return;
-      setLoading(true);
-      try {
-        const response = await diaryService.getById(id, diaryId, token);
-        const record = response.record;
-        setExistingAttachments(record.attachments ?? []);
-        setFormData({
-          title: record.title,
-          time: record.time,
-          location: record.location,
-          content: record.content,
-          mood: record.mood,
-          learning: record.learning ?? "",
-          hasCrisis: record.hasCrisis,
-          crisisDetails: record.crisisDetails ?? "",
-          resolution: record.resolution ?? "",
-          icon: record.type === "meal" ? "Refeição" : record.type === "activity" ? "Atividade" : record.type === "alert" ? "Alerta" : "Escola",
-        });
-      } catch (error) {
-        toast.error(error instanceof Error ? error.message : "Erro ao carregar anotação");
-      } finally { setLoading(false); }
-    }
-    loadRecord();
-  }, [isEdit, id, diaryId, token]);
-
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!id || !token) return;
-
-    const typeMap: Record<string, DiaryRecordType> = { Escola: "school", Refeição: "meal", Atividade: "activity", Alerta: "alert" };
-    const payload = { ...formData, type: typeMap[formData.icon] ?? "school" };
-
-    setLoading(true);
-    try {
-      let savedRecordId = diaryId;
-      if (isEdit && diaryId) {
-        const updated = await diaryService.update(id, diaryId, payload, token);
-        savedRecordId = updated.record.id;
-        toast.success("Anotação atualizada!");
-      } else {
-        const created = await diaryService.create(id, payload, token);
-        savedRecordId = created.record.id;
-        toast.success("Anotação salva com sucesso!");
-      }
-
-      if (attachment && savedRecordId) {
-        setUploadingAttachment(true);
-        const uploaded = await diaryService.uploadAttachment(id, savedRecordId, attachment, token);
-        setExistingAttachments((prev) => [...prev, uploaded.attachment]);
-        toast.success("Anexo enviado com sucesso!");
-      }
-
-      navigate(`/child/${id}/diary`);
-    } catch (error) {
-      toast.error(error instanceof Error ? error.message : "Erro ao salvar anotação");
-    } finally {
-      setLoading(false);
-      setUploadingAttachment(false);
-    }
-  };
-  function validateAttachment(file: File) {
-    const allowed = ["image/jpeg", "image/png", "image/webp", "application/pdf"];
-    const maxSizeMb = 10;
-    if (!allowed.includes(file.type)) return "Formato inválido. Use JPG, PNG, WEBP ou PDF.";
-    if (file.size > maxSizeMb * 1024 * 1024) return "Arquivo muito grande. Máximo de 10MB.";
-    return null;
-  }
+  const { id, isEdit, loading, uploadingAttachment, attachment, setAttachment, existingAttachments, formData, setFormData, validateAttachment, submit, navigate } = useDiaryFormController();
 
   const moods = [
     { label: "Feliz", icon: Smile, color: "bg-green-100 text-green-600 border-green-200" }, { label: "Calmo", icon: Meh, color: "bg-blue-100 text-blue-600 border-blue-200" }, { label: "Ansioso", icon: Frown, color: "bg-orange-100 text-orange-600 border-orange-200" }, { label: "Irritado", icon: AlertTriangle, color: "bg-red-100 text-red-600 border-red-200" },
   ];
   const categories = [{ label: "Escola", icon: School }, { label: "Refeição", icon: Coffee }, { label: "Atividade", icon: Target }, { label: "Alerta", icon: Zap }];
 
-  return <div className="max-w-4xl mx-auto py-8 px-4"><div className="flex items-center justify-between mb-8"><div className="flex items-center gap-4"><Link to={`/child/${id}/diary`} className="p-2 hover:bg-white rounded-xl transition-colors border border-transparent hover:border-gray-100"><ArrowLeft className="size-6 text-gray-600" /></Link><h1 className="text-3xl font-bold text-gray-900">{isEdit ? "Editar Anotação" : "Nova Anotação no Diário"}</h1></div></div><form onSubmit={handleSubmit} className="space-y-8"><div className="bg-white rounded-3xl border border-gray-100 shadow-sm p-8 space-y-6">
+  return <div className="max-w-4xl mx-auto py-8 px-4"><div className="flex items-center justify-between mb-8"><div className="flex items-center gap-4"><Link to={`/child/${id}/diary`} className="p-2 hover:bg-white rounded-xl transition-colors border border-transparent hover:border-gray-100"><ArrowLeft className="size-6 text-gray-600" /></Link><h1 className="text-3xl font-bold text-gray-900">{isEdit ? "Editar Anotação" : "Nova Anotação no Diário"}</h1></div></div><form onSubmit={submit} className="space-y-8"><div className="bg-white rounded-3xl border border-gray-100 shadow-sm p-8 space-y-6">
 <div className="grid grid-cols-1 md:grid-cols-3 gap-6"><div className="space-y-2"><label className="text-sm font-bold text-gray-700 flex items-center gap-2"><Type className="size-4 text-[#7b8bda]" />Título</label><input type="text" value={formData.title} onChange={(e)=>setFormData({...formData,title:e.target.value})} className="w-full px-4 py-3 bg-gray-50 border-2 border-transparent rounded-2xl" required/></div><div className="space-y-2"><label className="text-sm font-bold text-gray-700 flex items-center gap-2"><Clock className="size-4 text-[#7b8bda]" />Horário</label><input type="time" value={formData.time} onChange={(e)=>setFormData({...formData,time:e.target.value})} className="w-full px-4 py-3 bg-gray-50 border-2 border-transparent rounded-2xl" required/></div><div className="space-y-2"><label className="text-sm font-bold text-gray-700 flex items-center gap-2"><MapPin className="size-4 text-[#7b8bda]" />Local</label><input type="text" value={formData.location} onChange={(e)=>setFormData({...formData,location:e.target.value})} className="w-full px-4 py-3 bg-gray-50 border-2 border-transparent rounded-2xl" required/></div></div>
 <div className="space-y-3"><label className="text-sm font-bold text-gray-700">Ícone</label><div className="grid grid-cols-2 md:grid-cols-4 gap-4">{categories.map((cat)=><button key={cat.label} type="button" onClick={()=>setFormData({...formData,icon:cat.label})} className={`flex items-center gap-3 p-4 rounded-2xl border-2 ${formData.icon===cat.label?"bg-[#7b8bda] text-white border-[#7b8bda]":"bg-gray-50"}`}><cat.icon className="size-5" /><span className="font-bold">{cat.label}</span></button>)}</div></div>
 <div className="space-y-2"><label className="text-sm font-bold text-gray-700 flex items-center gap-2"><BookOpen className="size-4 text-[#7b8bda]" />Anotações</label><textarea value={formData.content} onChange={(e)=>setFormData({...formData,content:e.target.value})} rows={5} className="w-full px-4 py-3 bg-gray-50 border-2 border-transparent rounded-2xl" required/></div>
