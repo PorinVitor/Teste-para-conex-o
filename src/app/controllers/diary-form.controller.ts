@@ -39,7 +39,7 @@ export function useDiaryFormController() {
           icon: record.type === "meal" ? "Refeição" : record.type === "activity" ? "Atividade" : record.type === "alert" ? "Alerta" : "Escola",
         });
       } catch (error) {
-        toast.error(error instanceof Error ? error.message : "Erro ao carregar anotação");
+        toast.error(error instanceof Error ? error.message : "Não foi possível carregar a anotação.");
       } finally { setLoading(false); }
     }
     loadRecord();
@@ -82,7 +82,7 @@ export function useDiaryFormController() {
 
       navigate(`/child/${id}/diary`);
     } catch (error) {
-      toast.error(error instanceof Error ? error.message : "Erro ao salvar anotação");
+      toast.error(error instanceof Error ? error.message : "Não foi possível salvar a anotação.");
     } finally {
       setLoading(false);
       setUploadingAttachment(false);

@@ -45,7 +45,7 @@ export function useDiaryListController() {
         });
         setRecords(response.records);
       } catch (error) {
-        toast.error(error instanceof Error ? error.message : "Erro ao carregar diário");
+        toast.error(error instanceof Error ? error.message : "Não foi possível carregar o diário.");
       } finally {
         setLoading(false);
       }
@@ -63,7 +63,7 @@ export function useDiaryListController() {
       setRecords((prev) => prev.filter((r) => r.id !== recordId));
       toast.success("Registro excluído com sucesso.");
     } catch (error) {
-      toast.error(error instanceof Error ? error.message : "Erro ao excluir registro");
+      toast.error(error instanceof Error ? error.message : "Não foi possível excluir o registro.");
     }
   }
 

@@ -19,7 +19,7 @@ export function useLoginController() {
       toast.success("Login realizado com sucesso!");
       navigate("/");
     } catch (error) {
-      const message = error instanceof Error ? error.message : "Falha no login";
+      const message = error instanceof Error ? error.message : "Não foi possível entrar. Tente de novo.";
       toast.error(message);
     } finally {
       setLoading(false);

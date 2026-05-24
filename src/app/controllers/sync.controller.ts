@@ -10,7 +10,7 @@ export function useSyncController() {
 
   async function syncWithMobile() {
     if (!token) {
-      toast.error("Sessão inválida. Faça login novamente.");
+      toast.error("Sua sessão é inválida. Entre novamente.");
       return null;
     }
 
@@ -24,7 +24,7 @@ export function useSyncController() {
       toast.success("Sincronização concluída com sucesso.");
       return response;
     } catch (error) {
-      toast.error(error instanceof Error ? error.message : "Falha ao sincronizar dados do mobile");
+      toast.error(error instanceof Error ? error.message : "Não foi possível sincronizar os dados.");
       return null;
     } finally {
       setSyncing(false);

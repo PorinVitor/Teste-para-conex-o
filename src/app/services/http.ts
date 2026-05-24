@@ -17,11 +17,11 @@ interface RequestOptions extends RequestInit {
 }
 
 function getErrorMessage(payload: any) {
-  if (!payload) return "Erro ao processar requisição";
+  if (!payload) return "Não foi possível concluir a ação.";
   if (typeof payload.message === "string") return payload.message;
   if (Array.isArray(payload.message)) return payload.message.join(", ");
   if (typeof payload.error === "string") return payload.error;
-  return "Erro ao processar requisição";
+  return "Não foi possível concluir a ação.";
 }
 
 export async function http<T>(path: string, options: RequestOptions = {}): Promise<T> {

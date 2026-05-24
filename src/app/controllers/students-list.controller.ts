@@ -24,7 +24,7 @@ export function useStudentsListController() {
         const response = await dependentsService.list(token);
         setChildren(response.dependents);
       } catch (error) {
-        const message = error instanceof Error ? error.message : "Falha ao carregar alunos";
+        const message = error instanceof Error ? error.message : "Não foi possível carregar os alunos.";
         toast.error(message);
       } finally {
         setLoading(false);

@@ -68,7 +68,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     function handleUnauthorized() {
       if (!state.token) return;
       logout();
-      toast.error("Sua sessão expirou. Faça login novamente.");
+      toast.error("Sua sessão expirou. Entre novamente.");
       if (window.location.pathname !== "/login") {
         window.location.href = "/login";
       }

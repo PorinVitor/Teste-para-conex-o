@@ -23,7 +23,7 @@ export function useRegisterController() {
       toast.success("Conta criada com sucesso!");
       navigate("/");
     } catch (error) {
-      const message = error instanceof Error ? error.message : "Falha no cadastro";
+      const message = error instanceof Error ? error.message : "Não foi possível criar a conta. Tente de novo.";
       toast.error(message);
     } finally {
       setLoading(false);
