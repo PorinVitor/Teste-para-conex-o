@@ -1,4 +1,5 @@
 import { http } from "./http";
+import { isLocalMockEnabled, localDbService } from "./local-db.service";
 
 export interface SchoolUser {
   id: string;
@@ -44,6 +45,8 @@ function normalizeAuthResponse(response: any): AuthResponse {
 
 export const authService = {
   async login(payload: LoginPayload) {
+    if (isLocalMockEnabled()) return localDbService.login(payload);
+
     const response = await http<any>("/auth/login", {
       method: "POST",
       body: JSON.stringify({
@@ -55,6 +58,8 @@ export const authService = {
     return normalizeAuthResponse(response);
   },
   async register(payload: RegisterPayload) {
+    if (isLocalMockEnabled()) return localDbService.register(payload);
+
     const response = await http<any>("/school-users", {
       method: "POST",
       body: JSON.stringify({

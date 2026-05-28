@@ -1,4 +1,5 @@
 import { http } from "./http";
+import { isLocalMockEnabled, localDbService } from "./local-db.service";
 
 export interface Dependent {
   id: string;
@@ -39,6 +40,8 @@ function normalizeDependent(raw: any): Dependent {
 
 export const dependentsService = {
   async link(payload: LinkDependentPayload, token: string) {
+    if (isLocalMockEnabled()) return localDbService.linkDependent(payload.code);
+
     const response = await http<any>("/school/dependents/link", {
       method: "POST",
       token,
@@ -48,6 +51,8 @@ export const dependentsService = {
     return { dependent: normalizeDependent(response?.dependent ?? response) } as LinkDependentResponse;
   },
   async list(token: string) {
+    if (isLocalMockEnabled()) return localDbService.listDependents();
+
     const response = await http<any>("/school/dependents", {
       method: "GET",
       token,

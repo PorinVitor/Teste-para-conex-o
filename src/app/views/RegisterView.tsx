@@ -22,7 +22,7 @@ export function RegisterView() {
               <label className="block text-sm font-medium text-gray-700">Nome Completo</label>
               <div className="mt-1 relative rounded-md shadow-sm">
                 <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none"><User className="h-5 w-5 text-gray-400" /></div>
-                <input type="text" required value={formData.name} onChange={(e) => setFormData((prev) => ({ ...prev, name: e.target.value }))} className="block w-full pl-10 pr-3 py-2 border border-gray-300 rounded-xl" placeholder="Nome do usuário" />
+                <input type="text" value={formData.name} onChange={(e) => setFormData((prev) => ({ ...prev, name: e.target.value }))} className="block w-full pl-10 pr-3 py-2 border border-gray-300 rounded-xl" placeholder="Nome do usuário" />
               </div>
             </div>
 
@@ -30,7 +30,7 @@ export function RegisterView() {
               <label className="block text-sm font-medium text-gray-700">E-mail</label>
               <div className="mt-1 relative rounded-md shadow-sm">
                 <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none"><Mail className="h-5 w-5 text-gray-400" /></div>
-                <input type="email" required value={formData.email} onChange={(e) => setFormData((prev) => ({ ...prev, email: e.target.value }))} className="block w-full pl-10 pr-3 py-2 border border-gray-300 rounded-xl" placeholder="seu@email.com" />
+                <input type="email" value={formData.email} onChange={(e) => setFormData((prev) => ({ ...prev, email: e.target.value }))} className="block w-full pl-10 pr-3 py-2 border border-gray-300 rounded-xl" placeholder="seu@email.com" />
               </div>
             </div>
 
@@ -38,7 +38,7 @@ export function RegisterView() {
               <label className="block text-sm font-medium text-gray-700">Cargo</label>
               <div className="mt-1 relative rounded-md shadow-sm">
                 <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none"><UserCheck className="h-5 w-5 text-gray-400" /></div>
-                <select required value={formData.role} onChange={(e) => setFormData((prev) => ({ ...prev, role: e.target.value }))} className="block w-full pl-10 pr-3 py-2 border border-gray-300 rounded-xl bg-white">
+                <select value={formData.role} onChange={(e) => setFormData((prev) => ({ ...prev, role: e.target.value }))} className="block w-full pl-10 pr-3 py-2 border border-gray-300 rounded-xl bg-white">
                   <option value="">Selecione seu cargo</option>
                   <option value="director">Diretor(a)</option>
                   <option value="coordinator">Coordenador(a)</option>
@@ -52,7 +52,7 @@ export function RegisterView() {
               <label className="block text-sm font-medium text-gray-700">Escola</label>
               <div className="mt-1 relative rounded-md shadow-sm">
                 <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none"><Building className="h-5 w-5 text-gray-400" /></div>
-                <input type="text" required value={formData.schoolName} onChange={(e) => setFormData((prev) => ({ ...prev, schoolName: e.target.value }))} className="block w-full pl-10 pr-3 py-2 border border-gray-300 rounded-xl" placeholder="Nome da Instituição" />
+                <input type="text" value={formData.schoolName} onChange={(e) => setFormData((prev) => ({ ...prev, schoolName: e.target.value }))} className="block w-full pl-10 pr-3 py-2 border border-gray-300 rounded-xl" placeholder="Nome da Instituição" />
               </div>
             </div>
 
@@ -60,7 +60,7 @@ export function RegisterView() {
               <label className="block text-sm font-medium text-gray-700">Senha</label>
               <div className="mt-1 relative rounded-md shadow-sm">
                 <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none"><Lock className="h-5 w-5 text-gray-400" /></div>
-                <input type="password" required value={formData.password} onChange={(e) => setFormData((prev) => ({ ...prev, password: e.target.value }))} className="block w-full pl-10 pr-3 py-2 border border-gray-300 rounded-xl" placeholder="••••••••" />
+                <input type="password" value={formData.password} onChange={(e) => setFormData((prev) => ({ ...prev, password: e.target.value }))} className="block w-full pl-10 pr-3 py-2 border border-gray-300 rounded-xl" placeholder="••••••••" />
               </div>
             </div>
 

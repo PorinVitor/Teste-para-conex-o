@@ -16,12 +16,19 @@ const authServiceSource = fs.readFileSync("src/app/services/auth.service.ts", "u
 assert.match(authServiceSource, /accessToken/);
 assert.match(authServiceSource, /schoolUser/);
 assert.match(authServiceSource, /trim\(\)\.toLowerCase\(\)/);
+assert.match(authServiceSource, /isLocalMockEnabled/);
 
 const dependentsServiceSource = fs.readFileSync("src/app/services/dependents.service.ts", "utf8");
 assert.match(dependentsServiceSource, /guardian_name/);
 assert.match(dependentsServiceSource, /has_recent_crisis/);
 assert.match(dependentsServiceSource, /trim\(\)\.toUpperCase\(\)/);
+assert.match(dependentsServiceSource, /linkDependent/);
 
+
+const localDbServiceSource = fs.readFileSync("src/app/services/local-db.service.ts", "utf8");
+assert.match(localDbServiceSource, /VITE_USE_LOCAL_MOCKS/);
+assert.match(localDbServiceSource, /createDiaryRecord/);
+assert.match(localDbServiceSource, /uploadDiaryAttachment/);
 
 const diaryListControllerSource = fs.readFileSync("src/app/controllers/diary-list.controller.ts", "utf8");
 assert.match(diaryListControllerSource, /useDiaryListController/);
@@ -42,4 +49,4 @@ const syncControllerSource = fs.readFileSync("src/app/controllers/sync.controlle
 assert.match(syncControllerSource, /useSyncController/);
 assert.match(syncControllerSource, /syncWithMobile/);
 
-console.log("OK: min tests passed (date + services + controllers + sync)");
+console.log("OK: min tests passed (date + services + controllers + sync + local mock)");
